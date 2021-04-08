@@ -26,6 +26,8 @@ class RegisterCustomerRequest extends FormRequest
         return [
             'name' => 'required|min:5|max:50',
             'email' => 'required|email',
+            'phone' => 'required',
+            'address' => 'required',
             'password' => 'required|min:6|max:20',
             'confirm_password' => 'required|same:password|min:6'
         ];

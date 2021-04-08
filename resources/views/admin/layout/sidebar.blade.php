@@ -86,6 +86,35 @@
                     </ul>
                 </li>
                 <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Orders manager
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('customers.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Customers list</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>------</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>-----</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
                     <a href="" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>

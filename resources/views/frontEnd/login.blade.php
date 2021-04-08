@@ -6,7 +6,7 @@
 @section('CSS')
 @endsection
 @section('search')
-    <li><div style="width: 250px"></div></li>
+    <li><div style="width: 200px"></div></li>
 @endsection
 @section('content')
 

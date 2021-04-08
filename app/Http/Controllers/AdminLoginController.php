@@ -14,7 +14,7 @@ class AdminLoginController extends Controller
         if (!Auth::user()){
             return view('admin.login.login');
         }else{
-            return redirect('/');
+            return redirect()->route('book.index');
         }
     }
 

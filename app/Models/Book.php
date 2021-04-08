@@ -34,6 +34,11 @@ class Book extends Model
         return $this->belongsToMany( Author::class,'author_book','book_id', 'author_id');
     }
 
+    function orders(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Order::class,'orderdetails','book_id','order_id');
+    }
+
     function checkAuthor($authorId) {
         return $this->authors->contains($authorId);
     }

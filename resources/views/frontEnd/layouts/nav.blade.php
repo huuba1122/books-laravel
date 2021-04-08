@@ -52,11 +52,18 @@
                                 </div>
                             </li>
                             <li class="col-3">
-                                <a href="{{route('home.login')}}"><span class="icon_profile"></span>Login</a>
-                                <ul class="dropdown">
-                                    <li><a href="./signup.html">Sign Up</a></li>
-                                    <li><a href="./login.html">Logout</a></li>
-                                </ul>
+                                @if(\Illuminate\Support\Facades\Auth::guard('customer')->user())
+                                    <a><span class="icon_profile"></span></a>
+                                    <ul class="dropdown">
+                                        <li><a href="">{{\Illuminate\Support\Facades\Auth::guard('customer')->user()->name}}</a></li>
+                                        <li><a href="{{route('home.logout')}}">logout</a></li>
+                                    </ul>
+                                @else
+                                    <a href="{{route('home.login')}}"><span class="icon_profile"></span>Login</a>
+                                    <ul class="dropdown">
+                                        <li><a href="{{route('home.show-form-register')}}">Register</a></li>
+                                    </ul>
+                                @endif
                             </li>
                         </ul>
                     </nav>

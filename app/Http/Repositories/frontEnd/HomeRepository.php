@@ -12,4 +12,5 @@ class HomeRepository
         {
             return Book::paginate(6);
         }
+
 }

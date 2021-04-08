@@ -4,17 +4,24 @@ namespace App\Http\Controllers\fontEnd;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterCustomerRequest;
+use App\Http\Services\CustomerService;
 use App\Http\Services\frontEnd\HomeService;
+use App\Models\Order;
+use App\Models\Orderdetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
 
     protected $homeService;
-    public function __construct(HomeService $homeService)
+    protected $customerService;
+    public function __construct(HomeService $homeService, CustomerService $customerService)
     {
         $this->homeService = $homeService;
+        $this->customerService = $customerService;
     }
 
     function index()
@@ -31,15 +38,77 @@ class HomeController extends Controller
 
     function checkLogin(Request $request)
     {
-        dd($request->all());
+//        dd($request->all());
+        if (Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Authentication was successful...
+//            dd(Auth::guard('customer')->user());
+            return redirect()->route('home.index');
+        }else{
+
+            Session::flash('error', 'Email or password not correct');
+            return redirect()->route('home.login');
+        }
+    }
+
+    function logout()
+    {
+        if (Auth::guard('customer')->user()){
+            Auth::guard('customer')->logout();
+            return redirect()->route('home.login');
+        }else{
+            return redirect()->route('home.login');
+        }
     }
 
     function showFormRegister()
     {
         return view('frontEnd.register');
     }
-    function register(RegisterCustomerRequest $request)
+    function register(RegisterCustomerRequest $request): \Illuminate\Http\RedirectResponse
     {
-        dd($request->all());
+        $this->customerService->store($request);
+        return redirect()->route('home.index')->with('message','Register successfully');
+    }
+
+    function showFormCheckOut()
+    {
+        $customer = Auth::guard('customer')->user();
+        $carts = Session::get('cart');
+        if ($carts){
+            return view('frontEnd.carts.checkout', compact('carts', 'customer'));
+        }else{
+            return back();
+        }
+    }
+
+    function checkout(Request $request)
+    {
+        $customer = Auth::guard('customer')->user();
+        $carts = Session::get('cart');
+        if ($customer){
+            DB::beginTransaction();
+            try {
+                $order = new Order();
+                $order->customer_id = $customer->id;
+                $order->order_date = date('Y-m-d');
+                $order->status_id = 7;
+                $order->price = $carts->totalPrice;
+                $order->save();
+                foreach ($carts->items as $key => $item){
+                    $orderDetail = new Orderdetail();
+                    $orderDetail->order_id = $order->id;
+                    $orderDetail->book_id = $key;
+                    $orderDetail->quantity = $item['totalQuantity'];
+                    $orderDetail->price = $item['totalPrice'];
+                    $orderDetail->save();
+                }
+                DB::commit();
+            }catch (\Exception $exception){
+                DB::rollBack();
+                dd($exception->getMessage());
+            }
+            Session::forget('cart');
+        }
+        return redirect()->route('home.index');
     }
 }

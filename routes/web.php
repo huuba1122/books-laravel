@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\StatusController;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +24,10 @@ Route::get('/', [\App\Http\Controllers\fontEnd\HomeController::class, 'index'])-
 Route::get('/login', [\App\Http\Controllers\fontEnd\HomeController::class, 'loginCustomer'])->name('home.login');
 Route::get('/register', [\App\Http\Controllers\fontEnd\HomeController::class, 'showFormRegister'])->name('home.show-form-register');
 Route::post('/login', [\App\Http\Controllers\fontEnd\HomeController::class, 'checkLogin'])->name('home.check-login');
+Route::get('/logout', [\App\Http\Controllers\fontEnd\HomeController::class, 'logout'])->name('home.logout');
 Route::post('/register', [\App\Http\Controllers\fontEnd\HomeController::class, 'register'])->name('home.register');
+Route::get('/checkout', [\App\Http\Controllers\fontEnd\HomeController::class, 'showFormCheckOut'])->name('home.show-form-checkout');
+Route::post('/checkout', [\App\Http\Controllers\fontEnd\HomeController::class, 'checkout'])->name('home.checkout');
 Route::prefix('/cart')->group(function (){
     Route::get('/{id}/add',[\App\Http\Controllers\fontEnd\CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/show-cart',[\App\Http\Controllers\fontEnd\CartController::class, 'showCart'])->name('cart.show');
@@ -31,6 +35,8 @@ Route::prefix('/cart')->group(function (){
     Route::get('/{id}/remove-cart',[\App\Http\Controllers\fontEnd\CartController::class, 'removeProduct'])->name('cart.remove');
     Route::get('/delete-cart',[\App\Http\Controllers\fontEnd\CartController::class, 'deleteCart'])->name('cart.delete');
 });
+
+
 
 // quan ly admin
 
@@ -111,6 +117,12 @@ Route::prefix('/admin')->group(function () {
             Route::get('/{is}/edit', [StatusController::class, 'edit'])->name('status.edit');
             Route::post('/{is}/edit', [StatusController::class, 'update'])->name('status.update');
             Route::get('/{is}/delete', [StatusController::class, 'delete'])->name('status.delete');
+        });
+        Route::prefix('/customers')->group(function (){
+            Route::get('/',[CustomerController::class,'index'])->name('customers.index');
+            Route::get('/{id}/edit',[CustomerController::class,'edit'])->name('customers.edit');
+            Route::post('/{id}/edit',[CustomerController::class,'update'])->name('customers.update');
+            Route::get('/{id}/delete',[CustomerController::class,'delete'])->name('customers.delete');
         });
     });
 });

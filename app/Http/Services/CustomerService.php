@@ -5,6 +5,7 @@ namespace App\Http\Services;
 
 
 use App\Http\Repositories\CustomerRepository;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerService
 {
@@ -22,5 +23,13 @@ class CustomerService
     function findById($id)
     {
         return $this->customerRepo->findById($id);
+    }
+
+    function store($request)
+    {
+        $customer = $this->customerRepo->getInstance();
+        $customer->fill($request->all());
+        $customer->password = Hash::make($request->password);
+        $this->customerRepo->store($customer);
     }
 }

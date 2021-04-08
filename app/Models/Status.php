@@ -9,4 +9,9 @@ class Status extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Order::class,'status_id');
+    }
 }

@@ -50,14 +50,14 @@
                 </tr>
                 <tr>
                     <td><h4>Total Price</h4></td>
-                    <td colspan="5"><h4>{{number_format($cart->totalPrice)}}</h4></td>
+                    <td colspan="5"><h4>{{number_format($cart->totalPrice)}} VND</h4></td>
                 </tr>
                 </tbody>
 
             </table>
             <div style="display: inline-flex; justify-content: space-between" class="col-md-12">
                 <div>
-                    <button type="submit" class="btn btn-primary">Chechout</button>
+                    <a href="{{route('home.show-form-checkout')}}" class="btn btn-primary">Chechout</a>
                 </div>
                 <div>
                     <a href="{{route('cart.delete')}}" class="btn btn-danger">delete</a>
