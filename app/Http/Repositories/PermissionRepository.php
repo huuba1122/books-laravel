@@ -5,12 +5,13 @@ namespace App\Http\Repositories;
 
 
 use App\Models\Permission;
+use Illuminate\Support\Facades\DB;
 
 class PermissionRepository
 {
     function getAll()
     {
-        return Permission::all();
+        return Permission::paginate(5);
     }
 
     function getPermissionsParent()
@@ -41,7 +42,15 @@ class PermissionRepository
 
     function delete($permission)
     {
-        $permission->delete();
+        DB::beginTransaction();
+        try {
+            $permission->roles()->detach();
+            $permission->delete();
+            DB::commit();
+        }catch (\Exception $exception){
+            DB::rollBack();
+            dd($exception->getMessage());
+        }
     }
 
 }

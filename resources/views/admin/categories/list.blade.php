@@ -23,10 +23,13 @@
                                     <div class="row">
 
                                         {{--btn add--}}
-                                        <div class="col-sm-12 mb-2">
-                                            <a type="button" class="btn btn-primary" data-toggle="modal"
-                                               data-target="#addCategoryModal" >Add</a>
-                                        </div>
+                                        @can('add_category')
+                                            <div class="col-sm-12 mb-2">
+
+                                                <a type="button" class="btn btn-primary" data-toggle="modal"
+                                                   data-target="#addCategoryModal">Add</a>
+                                            </div>
+                                        @endcan
                                         <div class="col-sm-6">
                                             <table id="authorTable"
                                                    class="table table-bordered table-striped dataTable dtr-inline"
@@ -44,37 +47,54 @@
                                                         aria-label="Browser: activate to sort column ascending">
                                                         Name
                                                     </th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Platform(s): activate to sort column ascending">
-                                                        Action
-                                                    </th>
+                                                    @canany(['edit_category', 'delete_category'])
+                                                        <th class="sorting" tabindex="0" aria-controls="example1"
+                                                            rowspan="1" colspan="1"
+                                                            aria-label="Platform(s): activate to sort column ascending">
+                                                            Action
+                                                        </th>
+                                                    @endcanany
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 @foreach($categories as $key => $category)
-                                                    <tr  class="odd">
-                                                        <td  class="dtr-control sorting_1" tabindex="0">{{ $key + $categories->firstItem() }}</td>
-                                                        <td >{{$category->name}}</td>
-                                                        <td>
-                                                            <div  style="display: inline-flex">
-                                                                <div style="margin: 0 10px">
-                                                                    <a href="{{route('category.edit', $category->id)}}">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </a>
+                                                    <tr class="odd">
+                                                        <td class="dtr-control sorting_1"
+                                                            tabindex="0">{{ $key + $categories->firstItem() }}</td>
+                                                        <td>{{$category->name}}</td>
+                                                        @canany(['edit_category', 'delete_category'])
+                                                            <td>
+                                                                <div style="display: inline-flex">
+                                                                    @can('edit_category')
+                                                                        <div style="margin: 0 10px">
+                                                                            <a href="{{route('category.edit', $category->id)}}">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    @endcan
+                                                                    @can('delete_category')
+                                                                        <div style="margin: 0 10px">
+                                                                            <a href="{{route('category.delete', $category->id)}}"
+                                                                               onclick="return confirm('Are you sure delete Category : {{$category->name}}  ?')"
+                                                                               style="color: red">
+                                                                                <i class="far fa-trash-alt"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    @endcan
                                                                 </div>
-                                                                <div style="margin: 0 10px">
-                                                                    <a href="{{route('category.delete', $category->id)}}"
-                                                                       onclick="return confirm('Are you sure delete Category : {{$category->name}}  ?')"  style="color: red">
-                                                                        <i class="far fa-trash-alt"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
+                                                            </td>
+                                                        @endcanany
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
                                             </table>
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination justify-content-end">
+                                                    <li class="page-item ">
+                                                        {{ $categories->links() }}
+                                                    </li>
+                                                </ul>
+                                            </nav>
                                         </div>
                                     </div>
 
@@ -85,21 +105,26 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{route('category.store')}}" method="post" >
+                                                    <form action="{{route('category.store')}}" method="post">
                                                         @csrf
                                                         <div class="form-group">
-                                                            <label for="recipient-name" class="col-form-label">Name</label>
+                                                            <label for="recipient-name"
+                                                                   class="col-form-label">Name</label>
                                                             <input type="text" class="form-control" name="name">
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                                Close</button>
-                                                            <button type="submit"  class="btn btn-primary">Create</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Create
+                                                            </button>
                                                         </div>
                                                     </form>
                                                 </div>

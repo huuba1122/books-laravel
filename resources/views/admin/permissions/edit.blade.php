@@ -22,7 +22,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="col-md-5">
-                                    <form action="{{route('permissions.update')}}" method="post">
+                                    <form action="{{route('permissions.update', $permission->id)}}" method="post">
                                         @csrf
                                         <div class="form-group">
                                             <label>Name</label>
@@ -31,6 +31,19 @@
                                         <div class="form-group">
                                             <label>Description</label>
                                             <input name="des" value="{{$permission->des}}" type="text" class="form-control">
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label >Parent</label>
+                                            <select name="parent_id" class="form-control" >
+                                                <option selected>Choose parent</option>
+                                                @foreach($permissions as $permissionParent)
+                                                    <option
+                                                        @if($permissionParent->id === $permission->parent_id)
+                                                        selected
+                                                        @endif
+                                                        value="{{$permissionParent->id}}">{{$permissionParent->name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-sm">submit</button>
                                     </form>

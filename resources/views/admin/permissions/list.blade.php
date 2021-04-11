@@ -23,9 +23,12 @@
                                     <div class="row">
 
                                         {{--btn add--}}
-                                        <div class="col-sm-12 mb-2 float-right">
-                                            <a href="{{route('permissions.create')}}" class="btn btn-primary" >Add</a>
-                                        </div>
+                                        @can('add_permission')
+                                            <div class="col-sm-12 mb-2 float-right">
+                                                <a href="{{route('permissions.create')}}"
+                                                   class="btn btn-primary">Add</a>
+                                            </div>
+                                        @endcan
                                         <div class="col-sm-8">
                                             <table id="authorTable"
                                                    class="table table-bordered table-striped dataTable dtr-inline"
@@ -48,38 +51,54 @@
                                                         aria-label="Browser: activate to sort column ascending">
                                                         Description
                                                     </th>
+                                                    @canany(['edit_permission', 'delete_permission'])
                                                     <th class="sorting" tabindex="0" aria-controls="example1"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Platform(s): activate to sort column ascending">
                                                         Action
                                                     </th>
+                                                    @endcanany
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 @foreach($permissions as $key => $permission)
-                                                    <tr  class="odd">
-                                                        <td  class="dtr-control sorting_1" tabindex="0">{{ ++$key}}</td>
-                                                        <td >{{$permission->name}}</td>
-                                                        <td >{{$permission->des}}</td>
+                                                    <tr class="odd">
+                                                        <td class="dtr-control sorting_1" tabindex="0">{{ ++$key}}</td>
+                                                        <td>{{$permission->name}}</td>
+                                                        <td>{{$permission->des}}</td>
+                                                        @canany(['edit_permission', 'delete_permission'])
                                                         <td>
-                                                            <div  style="display: inline-flex">
-                                                                <div style="margin: 0 10px">
-                                                                    <a href="{{route('permissions.edit', $permission->id)}}">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </a>
-                                                                </div>
-                                                                <div style="margin: 0 10px">
-                                                                    <a href="{{route('permissions.delete', $permission->id)}}"
-                                                                       onclick="return confirm('Are you sure delete Permission: {{$permission->name}}  ?')"  style="color: red">
-                                                                        <i class="far fa-trash-alt"></i>
-                                                                    </a>
-                                                                </div>
+                                                            <div style="display: inline-flex">
+                                                                @can('edit_permission')
+                                                                    <div style="margin: 0 10px">
+                                                                        <a href="{{route('permissions.edit', $permission->id)}}">
+                                                                            <i class="fas fa-edit"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                @endcan
+                                                                @can('delete_permission')
+                                                                    <div style="margin: 0 10px">
+                                                                        <a href="{{route('permissions.delete', $permission->id)}}"
+                                                                           onclick="return confirm('Are you sure delete Permission: {{$permission->name}}  ?')"
+                                                                           style="color: red">
+                                                                            <i class="far fa-trash-alt"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                @endcan
                                                             </div>
                                                         </td>
+                                                        @endcanany
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
                                             </table>
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination justify-content-end">
+                                                    <li class="page-item ">
+                                                        {{ $permissions->links() }}
+                                                    </li>
+                                                </ul>
+                                            </nav>
                                         </div>
                                     </div>
                                 </div>

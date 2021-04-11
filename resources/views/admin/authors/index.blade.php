@@ -9,15 +9,16 @@
         @error('search_author')
         <p class="text-danger">{{ $message }}</p>
         @enderror
-            <form action="{{route('author.search')}}" class="form-inline" method="post">
-                @csrf
-                <input name="search_author" class="form-control @error('search_author') border-danger  @enderror" value="{{ $search ?? '' }}">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar" type="submit">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </form>
+        <form action="{{route('author.search')}}" class="form-inline" method="post">
+            @csrf
+            <input name="search_author" class="form-control @error('search_author') border-danger  @enderror"
+                   value="{{ $search ?? '' }}">
+            <div class="input-group-append">
+                <button class="btn btn-sidebar" type="submit">
+                    <i class="fas fa-search fa-fw"></i>
+                </button>
+            </div>
+        </form>
     </div>
 @endsection
 @section('css')
@@ -38,10 +39,14 @@
                             <div class="card-body">
                                 <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                                     <div class="row">
-                                        <div class="col-sm-12 mb-2">
-                                            <a type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#addAuthorModal" id="btnShowFormAddAuthor" >Add</a>
-                                        </div>
-                                        <div class="col-sm-12">
+                                        @can('add_author')
+                                            <div class="col-sm-12 mb-2">
+                                                <a type="button" class="btn btn-primary float-right"
+                                                   data-toggle="modal" data-target="#addAuthorModal"
+                                                   id="btnShowFormAddAuthor">Add</a>
+                                            </div>
+                                        @endcan
+                                        <div class="col-sm-6">
                                             <table id="authorTable"
                                                    class="table table-bordered table-striped dataTable dtr-inline"
                                                    role="grid" aria-describedby="example1_info">
@@ -58,29 +63,46 @@
                                                         aria-label="Browser: activate to sort column ascending">
                                                         Name
                                                     </th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Platform(s): activate to sort column ascending">
-                                                        Action
-                                                    </th>
+                                                    @canany(['edit_author','delete_author'])
+                                                        <th class="sorting" tabindex="0" aria-controls="example1"
+                                                            rowspan="1" colspan="1"
+                                                            aria-label="Platform(s): activate to sort column ascending">
+                                                            Action
+                                                        </th>
+                                                    @endcanany
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 @foreach($authors as $key => $author)
                                                     <tr id="{{$author->id}}" class="odd">
-                                                        <td  class="dtr-control sorting_1" tabindex="0">{{$key + $authors->firstItem()}}</td>
+                                                        <td class="dtr-control sorting_1"
+                                                            tabindex="0">{{$key + $authors->firstItem()}}</td>
                                                         <td id="authorname[{{$author->id}}]">{{$author->name}}</td>
-                                                        <td>
-                                                            <div  style="display: inline-flex">
-                                                                <div style="margin: 0 10px">
-                                                                    <a data-url="{{route('author.edit',$author->id)}}" data-id="{{$author->id}}" data-toggle="modal"
-                                                                        class="btnShowFormUpdateAuthor"><i class="fas fa-edit"></i></a>
+                                                        @canany(['edit_author','delete_author'])
+                                                            <td>
+                                                                <div style="display: inline-flex">
+                                                                    @can('edit_author')
+                                                                        <div style="margin: 0 10px">
+                                                                            <a data-url="{{route('author.edit',$author->id)}}"
+                                                                               data-id="{{$author->id}}"
+                                                                               data-toggle="modal"
+                                                                               class="btnShowFormUpdateAuthor"><i
+                                                                                    class="fas fa-edit"></i></a>
+                                                                        </div>
+                                                                    @endcan
+                                                                    @can('delete_author')
+                                                                        <div style="margin: 0 10px">
+                                                                            <a href="{{route('author.delete', $author->id)}}"
+                                                                               data-id="{{$author->id}}"
+                                                                               onclick="return confirm('Xác nhận xóa tác giả:  {{$author->name}}  ?')"
+                                                                               class="btnDeleteAuthor"
+                                                                               style="color: red"><i
+                                                                                    class="far fa-trash-alt"></i></a>
+                                                                        </div>
+                                                                    @endcan
                                                                 </div>
-                                                                <div style="margin: 0 10px">
-                                                                    <a href="{{route('author.delete', $author->id)}}" data-id="{{$author->id}}" onclick="return confirm('Xác nhận xóa tác giả:  {{$author->name}}  ?')" class="btnDeleteAuthor" style="color: red"><i class="far fa-trash-alt"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
+                                                            </td>
+                                                        @endcanany
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -130,7 +152,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                            Close</button>
+                                            Close
+                                        </button>
                                         <button type="button" id="btnAddAuthor" class="btn btn-primary">Create</button>
                                     </div>
                                 </div>
@@ -159,8 +182,10 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                            Close</button>
-                                        <button type="button" id="btnUpdateAuthor" class="btn btn-primary">update</button>
+                                            Close
+                                        </button>
+                                        <button type="button" id="btnUpdateAuthor" class="btn btn-primary">update
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -177,49 +202,50 @@
 @endsection
 @section('js')
     <script>
-        function resetForm(){
+        function resetForm() {
             $('#_error').text('');
             $('#authorName').removeClass('border-danger');
         }
-        function addAuthor(){
+
+        function addAuthor() {
             var url = $("#addAuthor").attr('action');
             $.ajax({
-                url:    url,
-                type:   "POST",
-                data:  {
+                url: url,
+                type: "POST",
+                data: {
                     "name": $("#authorName").val(),
                     "_token": "{{ csrf_token() }}",
                 },
                 dataType: 'json',
-                success: function (data){
+                success: function (data) {
                     console.log(data);
                     $("#authorTable tbody tr").remove()
                     $("#authorTable tbody").html(data);
                     $("#addAuthorModal").modal('hide');
                     $('#addAuthor')[0].reset();
                 },
-                error: function (data){
+                error: function (data) {
                     var errors = JSON.parse(data.responseText);
                     $.each(errors, function (key, val) {
                         $('#_error').text(val.name);
                         $('#authorName').addClass('border-danger');
-                       // console.log(val.name);
+                        // console.log(val.name);
                     });
                 }
             });
         }
 
         // show form update author
-        function showFormUpdateAuthor(event){
+        function showFormUpdateAuthor(event) {
             event.preventDefault();
             $('#_updateError').text('');
             $('#updateAuthorName').removeClass('border-danger');
             let url = $(this).data('url');
             $.ajax({
-                url:    url,
-                type:   "GET",
+                url: url,
+                type: "GET",
                 dataType: 'json',
-                success: function (data){
+                success: function (data) {
                     $("#updateAuthorModal").modal('show');
                     $('#updateAuthor #updateAuthorName').val(data.name);
                     $('#updateAuthor #updateAuthorId').val(data.id);
@@ -228,18 +254,18 @@
         }
 
         // update author
-        function updateAuthor(){
+        function updateAuthor() {
             let id = $('#updateAuthorId').val();
             let origin = location.origin;
             let url = origin + '/admin/author/' + id + '/edit';
             $.ajax({
                 type: "POST",
                 url: url,
-                data:{
+                data: {
                     "name": $("#updateAuthorName").val(),
                     "_token": "{{ csrf_token() }}",
                 },
-                success: function (data){
+                success: function (data) {
                     $("#authorTable tbody tr").remove()
                     $("#authorTable tbody").html(data);
                     // $('#authorTable tbody #authorname['+ data.id+']').children(data.name);
@@ -249,12 +275,12 @@
             })
         }
 
-        $(document).ready(function (){
+        $(document).ready(function () {
             // Add author
-            $('#btnShowFormAddAuthor').on('click',resetForm);
+            $('#btnShowFormAddAuthor').on('click', resetForm);
             $("#btnAddAuthor").on('click', addAuthor);
-            $('.btnShowFormUpdateAuthor').on('click',showFormUpdateAuthor);
-            $('#btnUpdateAuthor').on('click',updateAuthor);
+            $('.btnShowFormUpdateAuthor').on('click', showFormUpdateAuthor);
+            $('#btnUpdateAuthor').on('click', updateAuthor);
             // $('.btnDeleteAuthor').on('click', deleteAuthor);
 
         })

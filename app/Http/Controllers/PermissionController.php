@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\PermissionService;
+use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PermissionController extends Controller
 {
@@ -25,16 +27,35 @@ class PermissionController extends Controller
         return view('admin.permissions.add');
     }
 
-    function store(Request $request): \Illuminate\Http\RedirectResponse
+    function store(Request $request)
     {
-        $this->permissionService->store($request);
+        DB::beginTransaction();
+        try {
+                $permissionParent = new Permission();
+                $permissionParent->name = $request->name_parent;
+                $permissionParent->des = $request->name_parent;
+                $permissionParent->parent_id = 0;
+                $permissionParent->save();
+            foreach ($request->name_childrent as $value) {
+                $permissionChildrent = new Permission();
+                $permissionChildrent->name = $value . '_' . $request->name_parent;
+                $permissionChildrent->des = $value . ' ' . $request->name_parent;
+                $permissionChildrent->parent_id = $permissionParent->id;
+                $permissionChildrent->save();
+            }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            dd($exception->getMessage());
+        }
         return redirect()->route('permissions.list');
     }
 
     function edit($id)
     {
-        $permissions = $this->permissionService->getAll();
-        return view('admin.permissions.edit', compact( 'permissions'));
+        $permission = $this->permissionService->findById($id);
+        $permissions = $this->permissionService->getPermissionsParent();
+        return view('admin.permissions.edit', compact( 'permissions', 'permission'));
     }
 
     function update($id, Request $request): \Illuminate\Http\RedirectResponse

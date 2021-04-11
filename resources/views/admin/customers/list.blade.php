@@ -55,38 +55,46 @@
                                                         aria-label="Browser: activate to sort column ascending">
                                                         Phone
                                                     </th>
+                                                    @canany(['edit_customer','delete_customer'])
                                                     <th class="sorting" tabindex="0" aria-controls="example1"
                                                         rowspan="1" colspan="1"
                                                         aria-label="Platform(s): activate to sort column ascending">
                                                         Action
                                                     </th>
+                                                    @endcanany
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 @foreach($customers as $key => $customer)
-                                                    <tr  class="odd">
-                                                        <td  class="dtr-control sorting_1" tabindex="0">{{ ++$key}}</td>
-                                                        <td >{{$customer->name}}</td>
-                                                        <td >{{$customer->email}}</td>
-                                                        <td >{{$customer->phone ?? ''}}</td>
-                                                        <td >{{$customer->address}}</td>
+                                                    <tr class="odd">
+                                                        <td class="dtr-control sorting_1" tabindex="0">{{ ++$key}}</td>
+                                                        <td>{{$customer->name}}</td>
+                                                        <td>{{$customer->email}}</td>
+                                                        <td>{{$customer->address}}</td>
+                                                        <td>{{$customer->phone ?? ''}}</td>
+
+                                                        @canany(['edit_customer','delete_customer'])
                                                         <td>
-
-                                                            <div  style="display: inline-flex">
-                                                                <div style="margin: 0 10px">
-                                                                    <a href="{{route('customers.edit', $customer->id)}}">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </a>
-
-                                                                </div>
-                                                                <div style="margin: 0 10px">
-                                                                    <a href="{{route('customers.delete', $customer->id)}}"
-                                                                       onclick="return confirm('Are you sure delete Customer : {{$customer->name}}  ?')"  style="color: red">
-                                                                        <i class="far fa-trash-alt"></i>
-                                                                    </a>
-                                                                </div>
+                                                            <div style="display: inline-flex">
+                                                                @can('edit_customer')
+                                                                    <div style="margin: 0 10px">
+                                                                        <a href="{{route('customers.edit', $customer->id)}}">
+                                                                            <i class="fas fa-edit"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                @endcan
+                                                                @can('delete_customer')
+                                                                    <div style="margin: 0 10px">
+                                                                        <a href="{{route('customers.delete', $customer->id)}}"
+                                                                           onclick="return confirm('Are you sure delete Customer : {{$customer->name}}  ?')"
+                                                                           style="color: red">
+                                                                            <i class="far fa-trash-alt"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                @endcan
                                                             </div>
                                                         </td>
+                                                        @endcanany
                                                     </tr>
                                                 @endforeach
                                                 </tbody>

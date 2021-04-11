@@ -23,9 +23,11 @@
                                     <div class="row">
 
                                         {{--btn add--}}
-                                        <div class="col-sm-12 mb-2 float-right">
-                                            <a href="{{route('roles.create')}}" class="btn btn-primary" >Add</a>
-                                        </div>
+                                        @can('add_role')
+                                            <div class="col-sm-12 mb-2 float-right">
+                                                <a href="{{route('roles.create')}}" class="btn btn-primary">Add</a>
+                                            </div>
+                                        @endcan
                                         <div class="col-sm-12">
                                             <table id="authorTable"
                                                    class="table table-bordered table-striped dataTable dtr-inline"
@@ -53,39 +55,48 @@
                                                         aria-label="Browser: activate to sort column ascending">
                                                         Roles
                                                     </th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Platform(s): activate to sort column ascending">
-                                                        Action
-                                                    </th>
+                                                    @canany(['edit_role', 'delete_role'])
+                                                        <th class="sorting" tabindex="0" aria-controls="example1"
+                                                            rowspan="1" colspan="1"
+                                                            aria-label="Platform(s): activate to sort column ascending">
+                                                            Action
+                                                        </th>
+                                                    @endcanany
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 @foreach($roles as $key => $role)
-                                                    <tr  class="odd">
-                                                        <td  class="dtr-control sorting_1" tabindex="0">{{ ++$key}}</td>
-                                                        <td >{{$role->name}}</td>
-                                                        <td >{{$role->des}}</td>
-                                                        <td >
+                                                    <tr class="odd">
+                                                        <td class="dtr-control sorting_1" tabindex="0">{{ ++$key}}</td>
+                                                        <td>{{$role->name}}</td>
+                                                        <td>{{$role->des}}</td>
+                                                        <td>
                                                             @foreach($role->permissions as $permission)
                                                                 {{$permission->des . ', '}}
                                                             @endforeach
                                                         </td>
-                                                        <td>
-                                                            <div  style="display: inline-flex">
-                                                                <div style="margin: 0 10px">
-                                                                    <a href="{{route('roles.edit', $role->id)}}">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </a>
+                                                        @canany(['edit_role', 'delete_role'])
+                                                            <td>
+                                                                <div style="display: inline-flex">
+                                                                    @can('edit_role')
+                                                                        <div style="margin: 0 10px">
+                                                                            <a href="{{route('roles.edit', $role->id)}}">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    @endcan
+                                                                    @can('delete_role')
+                                                                        <div style="margin: 0 10px">
+                                                                            <a href="{{route('roles.delete', $role->id)}}"
+                                                                               onclick="return confirm('Are you sure delete Role: {{$role->name}}  ?')"
+                                                                               style="color: red">
+                                                                                <i class="far fa-trash-alt"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    @endcan
                                                                 </div>
-                                                                <div style="margin: 0 10px">
-                                                                    <a href="{{route('roles.delete', $role->id)}}"
-                                                                       onclick="return confirm('Are you sure delete Role: {{$role->name}}  ?')"  style="color: red">
-                                                                        <i class="far fa-trash-alt"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
+                                                            </td>
+                                                        @endcanany
                                                     </tr>
                                                 @endforeach
                                                 </tbody>

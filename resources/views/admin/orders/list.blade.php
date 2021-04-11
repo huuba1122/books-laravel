@@ -33,7 +33,9 @@
                                                     <th >Price</th>
                                                     <th >Status</th>
                                                     <th >Oder date</th>
+                                                    @can('delete_order')
                                                     <th >Action</th>
+                                                    @endcan
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -45,13 +47,9 @@
                                                         <td>{{number_format($order->price, 0, '.', ',')}}</td>
                                                         <td>{{$order->status->name}}</td>
                                                         <td>{{$order->order_date}}</td>
+                                                       @can('delete_order')
                                                         <td>
                                                             <div  style="display: inline-flex">
-{{--                                                                <div style="margin: 0 10px">--}}
-{{--                                                                    <a href="{{route('orders.edit',$order->id)}}" >--}}
-{{--                                                                        <i class="fas fa-edit"></i>--}}
-{{--                                                                    </a>--}}
-{{--                                                                </div>--}}
                                                                 <div style="margin: 0 10px">
                                                                     <a href="{{route('orders.delete', $order->id)}}" onclick="return confirm('Are you sure delete Order Id:  {{$order->id}}  ?')" style="color: red">
                                                                         <i class="far fa-trash-alt"></i>
@@ -59,6 +57,7 @@
                                                                 </div>
                                                             </div>
                                                         </td>
+                                                        @endcan
                                                     </tr>
                                                 @endforeach
                                                 </tbody>

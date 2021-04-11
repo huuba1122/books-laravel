@@ -75,9 +75,11 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                @can('edit_order')
                                                 <div style="margin-left: 50px">
                                                     <button class="btn-sm btn-primary">update</button>
                                                 </div>
+                                                @endcan
                                             </div>
                                         </div>
 

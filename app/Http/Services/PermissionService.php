@@ -5,6 +5,7 @@ namespace App\Http\Services;
 
 
 use App\Http\Repositories\PermissionRepository;
+use App\Models\Permission;
 
 class PermissionService
 {
@@ -31,15 +32,13 @@ class PermissionService
 
     function store($request)
     {
-        $permission = $this->permissionRepo->getInstance();
-        $permission->fill($request->all());
-        $this->permissionRepo->store($permission);
     }
 
     function update($id, $request)
     {
         $permission = $this->permissionRepo->findById($id);
         $permission->fill($request->all());
+        $permission->parent_id = $request->parent_id;
         $this->permissionRepo->update($permission);
     }
 

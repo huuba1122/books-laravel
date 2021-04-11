@@ -21,16 +21,29 @@
                         <!-- /.card -->
                         <div class="card">
                             <div class="card-body">
-                                <div class="col-md-5">
+                                <div class="col-md-12">
                                     <form action="{{route('permissions.store')}}" method="post">
                                         @csrf
-                                        <div class="form-group">
-                                            <label>Name</label>
-                                            <input name="name" type="text" class="form-control">
+                                        <div class="form-group col-6">
+                                            <label class="text-primary">Module</label>
+                                            <select name="name_parent" class="form-control " >
+                                                <option selected>Choose module</option>
+                                                @foreach(config('permissions.table_module') as $moduleItem)
+                                                    <option value="{{$moduleItem}}">{{$moduleItem}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Description</label>
-                                            <input name="des" type="text" class="form-control">
+                                        <div class="form-group ">
+                                            <div class="row">
+                                                @foreach(config('permissions.module_childrent') as $moduleItemChildrent)
+                                                <div class="col-md-3">
+                                                    <label class="text-primary">
+                                                        <input name="name_childrent[]" type="checkbox"  value="{{$moduleItemChildrent}}">
+                                                            {{$moduleItemChildrent}}
+                                                    </label>
+                                                </div>
+                                                @endforeach
+                                            </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-sm">submit</button>
                                     </form>
