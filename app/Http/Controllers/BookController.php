@@ -49,8 +49,8 @@ class BookController extends Controller
     function store(CreateBookRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->bookService->store($request);
-
-        return redirect()->route('book.index')->with('message','Book added Successfully');
+        toastSuccess('add book successfully');
+        return redirect()->route('book.index');
     }
 
     function edit($id)
@@ -65,7 +65,9 @@ class BookController extends Controller
     function update($id, Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->bookService->update($id, $request);
-        return redirect()->route('book.index')->with('message','Book update Successfully');
+
+        toastSuccess('Update successfully ');
+        return redirect()->route('book.index');
     }
 
     function detail($id)
@@ -77,7 +79,9 @@ class BookController extends Controller
     function delete($id): \Illuminate\Http\RedirectResponse
     {
         $this->bookService->delete($id);
-        return redirect()->route('book.index')->with('message','Book delete Successfully');
+
+        toastWarning('Delete Successfully');
+        return redirect()->route('book.index')->with('message','Delete Successfully');
     }
 
 }

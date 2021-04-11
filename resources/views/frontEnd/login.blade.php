@@ -4,6 +4,18 @@
     login
 @endsection
 @section('CSS')
+    <style>
+        .normal-breadcrumb{
+            height: 200px;
+        }
+        .login{
+            padding-top: 50px;
+            padding-bottom: 100px;
+        }
+        .header_slider{
+            margin-top: 60px;
+        }
+    </style>
 @endsection
 @section('search')
     <li><div style="width: 200px"></div></li>
@@ -14,7 +26,7 @@
     <section class="normal-breadcrumb set-bg" data-setbg="{{asset('/frontEnd/img/normal-breadcrumb.jpg')}}">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-12 text-center header_slider">
                     <div class="normal__breadcrumb__text">
                         <h2>Login</h2>
                         <p>Welcome to the official BooksShop.</p>
@@ -38,10 +50,14 @@
                         <form action="{{route('home.check-login')}}" method="post">
                             @csrf
                             <div class="input__item">
-                                <input name="email" type="email" placeholder="Email address" value="{{old('email')}}">
+                                <input
+                                    style="color: black"
+                                    name="email" type="email" placeholder="Email address" value="{{old('email')}}">
                             </div>
                             <div class="input__item">
-                                <input type="password" name="password" placeholder="Password">
+                                <input
+                                    style="color: black"
+                                    type="password" name="password" placeholder="Password">
                                 <span class="icon_lock"></span>
                             </div>
                             <button type="submit" class="site-btn">Login Now</button>

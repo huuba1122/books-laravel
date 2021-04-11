@@ -33,7 +33,7 @@ class BookRepository extends Repository
             $book->save();
             $book->authors()->sync($authorsId);
             DB::commit();
-            Session::flash('success','create successfully ');
+//            Session::flash('success','create successfully ');
         }catch (\Exception $exception){
             DB::rollBack();
             dd($exception->getMessage());
@@ -47,10 +47,10 @@ class BookRepository extends Repository
             $book->update();
             $book->authors()->sync($authorsId);
             DB::commit();
-            Session::flash('success','update successfully');
+//            Session::flash('success','update successfully');
         }catch (\Exception $exception){
             DB::rollBack();
-            Session::flash('error','update fail !!!');
+//            Session::flash('error','update fail !!!');
         }
     }
 

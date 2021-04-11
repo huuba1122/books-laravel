@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\StatusController;
 use Illuminate\Support\Facades\Route;
@@ -21,19 +22,35 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\fontEnd\HomeController::class, 'index'])->name('home.index');
+Route::post('/', [\App\Http\Controllers\fontEnd\HomeController::class, 'searchBook'])->name('home.search-books');
+Route::get('/view-all', [\App\Http\Controllers\fontEnd\HomeController::class, 'viewAll'])->name('home.view-all');
+Route::get('/{id}/category-books', [\App\Http\Controllers\fontEnd\HomeController::class, 'getBooksOfCategory'])->name('home.books-of-category');
+Route::get('/{id}/book-detail', [\App\Http\Controllers\fontEnd\HomeController::class, 'bookDetail'])->name('home.book-detail');
+
+// login and register customer
+
 Route::get('/login', [\App\Http\Controllers\fontEnd\HomeController::class, 'loginCustomer'])->name('home.login');
 Route::get('/register', [\App\Http\Controllers\fontEnd\HomeController::class, 'showFormRegister'])->name('home.show-form-register');
 Route::post('/login', [\App\Http\Controllers\fontEnd\HomeController::class, 'checkLogin'])->name('home.check-login');
 Route::get('/logout', [\App\Http\Controllers\fontEnd\HomeController::class, 'logout'])->name('home.logout');
 Route::post('/register', [\App\Http\Controllers\fontEnd\HomeController::class, 'register'])->name('home.register');
+
+// Checkout cart
 Route::get('/checkout', [\App\Http\Controllers\fontEnd\HomeController::class, 'showFormCheckOut'])->name('home.show-form-checkout');
 Route::post('/checkout', [\App\Http\Controllers\fontEnd\HomeController::class, 'checkout'])->name('home.checkout');
+
+// cart
+
 Route::prefix('/cart')->group(function (){
     Route::get('/{id}/add',[\App\Http\Controllers\fontEnd\CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/show-cart',[\App\Http\Controllers\fontEnd\CartController::class, 'showCart'])->name('cart.show');
     Route::get('/update-cart',[\App\Http\Controllers\fontEnd\CartController::class, 'updateCart'])->name('cart.update');
     Route::get('/{id}/remove-cart',[\App\Http\Controllers\fontEnd\CartController::class, 'removeProduct'])->name('cart.remove');
     Route::get('/delete-cart',[\App\Http\Controllers\fontEnd\CartController::class, 'deleteCart'])->name('cart.delete');
+});
+
+Route::prefix('/books')->group(function (){
+
 });
 
 
@@ -123,6 +140,13 @@ Route::prefix('/admin')->group(function () {
             Route::get('/{id}/edit',[CustomerController::class,'edit'])->name('customers.edit');
             Route::post('/{id}/edit',[CustomerController::class,'update'])->name('customers.update');
             Route::get('/{id}/delete',[CustomerController::class,'delete'])->name('customers.delete');
+        });
+        Route::prefix('/order')->group(function (){
+            Route::get('/',[OrderController::class, 'index'])->name('orders.index');
+            Route::get('/{id}/edit',[OrderController::class, 'edit'])->name('orders.edit');
+            Route::post('/{id}/edit',[OrderController::class, 'update'])->name('orders.update');
+            Route::get('/{id}/detail',[OrderController::class, 'detail'])->name('orders.detail');
+            Route::get('/{id}/delete',[OrderController::class, 'delete'])->name('orders.delete');
         });
     });
 });

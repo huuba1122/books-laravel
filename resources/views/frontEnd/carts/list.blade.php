@@ -45,6 +45,9 @@
                     </tr>
                 @endforeach
                 <tr>
+                    <td colspan="6"></td>
+                </tr>
+                <tr>
                     <td><h4>Total Quantity</h4></td>
                     <td colspan="5"><h4>{{$cart->totalQuantity}}</h4></td>
                 </tr>
@@ -60,7 +63,7 @@
                     <a href="{{route('home.show-form-checkout')}}" class="btn btn-primary">Chechout</a>
                 </div>
                 <div>
-                    <a href="{{route('cart.delete')}}" class="btn btn-danger">delete</a>
+                    <a href="{{route('cart.delete')}}" onclick="return confirm('Empty cart')" class="btn btn-danger">delete</a>
                 </div>
             </div>
         </div>

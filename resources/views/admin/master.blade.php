@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
-
+    @toastr_css
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -30,53 +30,53 @@
 {{--     alpha/css/bootstrap.css" rel="stylesheet">--}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+{{--    <link rel="stylesheet" type="text/css"--}}
+{{--          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">--}}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>--}}
 
     <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
     @yield('scss')
 </head>
 {{--<body class="hold-transition sidebar-mini layout-fixed">--}}
 <body class="sidebar-mini" style="height: auto;">
-<script>
-    @if(Session::has('message'))
-        toastr.options =
-        {
-            "closeButton" : true,
-            "progressBar" : true
-        }
-    toastr.success("{{ session('message') }}");
-    @endif
+{{--<script>--}}
+{{--    @if(Session::has('message'))--}}
+{{--        toastr.options =--}}
+{{--        {--}}
+{{--            "closeButton" : true,--}}
+{{--            "progressBar" : true--}}
+{{--        }--}}
+{{--    toastr.success("{{ session('message') }}");--}}
+{{--    @endif--}}
 
-        @if(Session::has('error'))
-        toastr.options =
-        {
-            "closeButton" : true,
-            "progressBar" : true
-        }
-    toastr.error("{{ session('error') }}");
-    @endif
+{{--        @if(Session::has('error'))--}}
+{{--        toastr.options =--}}
+{{--        {--}}
+{{--            "closeButton" : true,--}}
+{{--            "progressBar" : true--}}
+{{--        }--}}
+{{--    toastr.error("{{ session('error') }}");--}}
+{{--    @endif--}}
 
-        @if(Session::has('info'))
-        toastr.options =
-        {
-            "closeButton" : true,
-            "progressBar" : true
-        }
-    toastr.info("{{ session('info') }}");
-    @endif
+{{--        @if(Session::has('info'))--}}
+{{--        toastr.options =--}}
+{{--        {--}}
+{{--            "closeButton" : true,--}}
+{{--            "progressBar" : true--}}
+{{--        }--}}
+{{--    toastr.info("{{ session('info') }}");--}}
+{{--    @endif--}}
 
-        @if(Session::has('warning'))
-        toastr.options =
-        {
-            "closeButton" : true,
-            "progressBar" : true
-        }
-    toastr.warning("{{ session('warning') }}");
-    @endif
-</script>
+{{--        @if(Session::has('warning'))--}}
+{{--        toastr.options =--}}
+{{--        {--}}
+{{--            "closeButton" : true,--}}
+{{--            "progressBar" : true--}}
+{{--        }--}}
+{{--    toastr.warning("{{ session('warning') }}");--}}
+{{--    @endif--}}
+{{--</script>--}}
 <div class="wrapper">
     <!-- Navbar -->
     @include('admin.layout.navbar')
@@ -172,6 +172,8 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('/backend/dist/js/demo.js')}}"></script>
 <script src="{{asset('/backend/ckeditor/js.js')}}"></script>
+@toastr_js
+@toastr_render
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 {{--<script src="{{asset('/backend/dist/js/pages/dashboard.js')}}"></script>--}}
 {{--<script>--}}

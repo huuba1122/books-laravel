@@ -2,7 +2,7 @@
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
         <img src="{{asset('backend/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <span class="brand-text font-weight-light">Books Shop</span>
     </a>
 
     <!-- Sidebar -->
@@ -13,7 +13,7 @@
                 <img src="{{asset('backend/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">Handsome</a>
             </div>
         </div>
         <!-- Sidebar Menu -->
@@ -101,28 +101,28 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link">
+                            <a href="{{route('orders.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>------</p>
+                                <p>Order list</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>-----</p>
-                            </a>
-                        </li>
+{{--                        <li class="nav-item">--}}
+{{--                            <a href="" class="nav-link">--}}
+{{--                                <i class="far fa-circle nav-icon"></i>--}}
+{{--                                <p>-----</p>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Widgets
+{{--                <li class="nav-item">--}}
+{{--                    <a href="" class="nav-link">--}}
+{{--                        <i class="nav-icon fas fa-th"></i>--}}
+{{--                        <p>--}}
+{{--                            Widgets--}}
 {{--                            <span class="right badge badge-danger">New</span>--}}
-                        </p>
-                    </a>
-                </li>
+{{--                        </p>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

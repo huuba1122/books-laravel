@@ -7,6 +7,13 @@
         .login__form:after{
             display: none;
         }
+         .normal-breadcrumb{
+             height: 200px;
+         }
+        .login{
+            padding-top: 50px;
+            padding-bottom: 100px;
+        }
     </style>
 @endsection
 @section('search')
@@ -35,33 +42,33 @@
     <section class="login spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="login__form">
                         <h3>Customer information</h3>
                         <form action="{{route('home.checkout')}}" method="post">
                             @csrf
                             <div class="input__item">
                                 <input name="name" type="text" placeholder="Username" value="{{$customer->name}}"
-                                       class="form-control">
+                                   style="color: black; font-size: 18px"    class="form-control">
 
                             </div>
                             <div class="input__item">
                                 <input name="email" type="email" placeholder="Email address" value="{{$customer->email}}"
-                                       class="form-control ">
+                                       style="color: black; font-size: 18px"       class="form-control ">
                             </div>
                             <div class="input__item">
                                 <input name="address" type="text" placeholder="address" value="{{$customer->address}}"
-                                       class="form-control">
+                                       style="color: black; font-size: 18px"    class="form-control">
                             </div>
                             <div class="input__item">
                                 <input name="phone" type="number" placeholder="phone" value="{{$customer->phone}}"
-                                       class="form-control">
+                                       style="color: black; font-size: 18px"   class="form-control">
                             </div>
                             <button type="submit" class="site-btn">Submit</button>
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                     <div class="login__form">
                         <h3>Cart information</h3>
                         <table class="table table-bordered" style="background-color: white">
@@ -75,9 +82,9 @@
                             <tbody>
                             @foreach($carts->items as $key => $item)
                             <tr>
-                                <th scope="row">{{$item['product']->name}}</th>
+                                <td >{{$item['product']->name}}</td>
                                 <td>{{$item['totalQuantity']}}</td>
-                                <td>{{number_format($item['totalPrice'])}}</td>
+                                <td>{{number_format($item['totalPrice'])}} VND</td>
                             </tr>
                             @endforeach
                             <tr>
@@ -86,7 +93,7 @@
                             </tr>
                             <tr>
                                 <th scope="row">Total Price</th>
-                                <td colspan="2">{{number_format($carts->totalPrice)}}</td>
+                                <td colspan="2">{{number_format($carts->totalPrice)}} VND</td>
                             </tr>
                             </tbody>
                         </table>

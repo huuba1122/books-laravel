@@ -17,7 +17,7 @@
                                 <ul class="dropdown">
                                     @foreach($categories as $category)
 
-                                        <li><a href="" id="{{$category->id}}">{{$category->name}}</a></li>
+                                        <li><a href="{{route('home.books-of-category', $category->id)}}" id="{{$category->id}}">{{$category->name}}</a></li>
 
                                     @endforeach
 
@@ -43,11 +43,12 @@
                                                 <i class="fa fa-shopping-cart"></i>
                                             </a>
                                         </div>
-                                        @if(\Illuminate\Support\Facades\Session::has('cart'))
+{{--                                        @if(\Illuminate\Support\Facades\Session::has('cart'))--}}
+
                                         <div>
-                                            <p id="total_quantity" style="color: red">({{\Illuminate\Support\Facades\Session::get('cart')->totalQuantity}})</p>
+                                            <p id="total_quantity" style="color: red">({{\Illuminate\Support\Facades\Session::get('cart')->totalQuantity ?? 0}})</p>
                                         </div>
-                                        @endif
+{{--                                        @endif--}}
                                     </div>
                                 </div>
                             </li>

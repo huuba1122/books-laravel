@@ -18,6 +18,7 @@ class HomeController extends Controller
 
     protected $homeService;
     protected $customerService;
+
     public function __construct(HomeService $homeService, CustomerService $customerService)
     {
         $this->homeService = $homeService;
@@ -26,9 +27,9 @@ class HomeController extends Controller
 
     function index()
     {
-//        return view('frontEnd.master');
-        $books = $this->homeService->getAll();
-        return view('frontEnd.books.home', compact('books'));
+        $books = $this->homeService->newBooks();
+        $booksOrderByName = $this->homeService->booksOrderByName();
+        return view('frontEnd.books.home', compact('books', 'booksOrderByName'));
     }
 
     function loginCustomer()
@@ -42,20 +43,20 @@ class HomeController extends Controller
         if (Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password])) {
             // Authentication was successful...
 //            dd(Auth::guard('customer')->user());
-            return redirect()->route('home.index');
-        }else{
+            return redirect()->route('home.index')->with('message', 'Login successfully');
+        } else {
 
             Session::flash('error', 'Email or password not correct');
-            return redirect()->route('home.login');
+            return redirect()->route('home.login')->with('error', 'Email or password not correct');
         }
     }
 
     function logout()
     {
-        if (Auth::guard('customer')->user()){
+        if (Auth::guard('customer')->user()) {
             Auth::guard('customer')->logout();
             return redirect()->route('home.login');
-        }else{
+        } else {
             return redirect()->route('home.login');
         }
     }
@@ -64,20 +65,22 @@ class HomeController extends Controller
     {
         return view('frontEnd.register');
     }
+
     function register(RegisterCustomerRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->customerService->store($request);
-        return redirect()->route('home.index')->with('message','Register successfully');
+        return redirect()->route('home.index')->with('message', 'Register successfully');
     }
 
     function showFormCheckOut()
     {
         $customer = Auth::guard('customer')->user();
         $carts = Session::get('cart');
-        if ($carts){
+        if ($carts && $customer) {
             return view('frontEnd.carts.checkout', compact('carts', 'customer'));
-        }else{
-            return back();
+        } else {
+            toastInfo('Please! Login to checkout...');
+            return redirect()->route('home.login');
         }
     }
 
@@ -85,7 +88,7 @@ class HomeController extends Controller
     {
         $customer = Auth::guard('customer')->user();
         $carts = Session::get('cart');
-        if ($customer){
+        if ($customer) {
             DB::beginTransaction();
             try {
                 $order = new Order();
@@ -94,7 +97,7 @@ class HomeController extends Controller
                 $order->status_id = 7;
                 $order->price = $carts->totalPrice;
                 $order->save();
-                foreach ($carts->items as $key => $item){
+                foreach ($carts->items as $key => $item) {
                     $orderDetail = new Orderdetail();
                     $orderDetail->order_id = $order->id;
                     $orderDetail->book_id = $key;
@@ -103,12 +106,41 @@ class HomeController extends Controller
                     $orderDetail->save();
                 }
                 DB::commit();
-            }catch (\Exception $exception){
+            } catch (\Exception $exception) {
                 DB::rollBack();
                 dd($exception->getMessage());
             }
             Session::forget('cart');
         }
+        toastSuccess('Checkout successfully, Your order is processing');
         return redirect()->route('home.index');
+    }
+
+    function searchBook(Request $request)
+    {
+        $books = $this->homeService->searchBooks($request);
+        return view('frontEnd.books.search', compact('books'));
+    }
+
+    function bookDetail($id)
+    {
+        $book = $this->homeService->findById($id);
+        return view('frontEnd.books.book-detail', compact('book'));
+    }
+
+    function viewAll()
+    {
+        $books = $this->homeService->getAll();
+        return view('frontEnd.books.view-all', compact('books'));
+    }
+
+    function getBooksOfCategory($id)
+    {
+       $books = $this->homeService->getBooksOfCategory($id);
+       if (!empty($books)){
+           return view('frontEnd.books.view-all', compact('books'));
+       }else{
+           return redirect()->route('home.index');
+       }
     }
 }

@@ -44,11 +44,6 @@
                                         <div class="col-sm-12">
                                             <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
                                                 <thead>
-                                                @if (Session::has('success'))
-                                                    <p class="text-success">
-                                                        <i class="fa fa-check" aria-hidden="true"></i>{{ Session::get('success') }}
-                                                    </p>
-                                                @endif
                                                 <tr role="row">
                                                     <th >#</th>
                                                     <th >ISBN</th>
@@ -76,7 +71,7 @@
 {{--                                                        <td>{{$book->publisher->name ?? ""}}</td>--}}
                                                         <td>{{number_format($book->price, 0, '.', ',')}}</td>
                                                         <td>
-                                                            <img src="{{asset('/storage/'. $book->image)}}" alt="" width="40px" height="50px">
+                                                            <img src="{{asset('/storage/'. $book->image)}}" alt="" width="40px" height="40px" style="border-radius: 50%">
                                                         </td>
                                                         <td>
                                                             <div  style="display: inline-flex">

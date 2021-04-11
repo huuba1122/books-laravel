@@ -77,7 +77,7 @@
                         <div class="row">
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                 <div class="section-title">
-                                    <h4>Recently Added Shows</h4>
+                                    <h4>Popular Shows</h4>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4">
@@ -113,54 +113,13 @@
                                 </div>
                             @endforeach
                         </div>
-                        <div class="recent__product">
-                            <div class="row">
-                                <div class="col-lg-8 col-md-8 col-sm-8">
-                                    <div class="section-title">
-                                        <h4>Popular Shows</h4>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-4">
-                                    <div class="btn__all">
-                                        <a href="{{route('home.view-all')}}" class="primary-btn">View All <span class="arrow_right"></span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                @foreach($booksOrderByName as $item)
-                                <div class="col-lg-4 col-md-6 col-sm-6">
-                                    <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="{{asset('/storage/'. $item->image)}}">
-                                            {{--                            <div class="ep">18 / 18</div>--}}
-                                            <div class="view"
-                                                 style="height: 35px; font-size: 18px">{{number_format($item->price)}}</div>
-                                        </div>
-                                        <div class="product__item__text" style="text-align: center">
-                                            <h5 class="mb-3"><a href="{{route('home.book-detail', $item->id)}}">{{$item->name}}</a></h5>
-                                            <ul>
-                                                <li>
-                                                    <div class="comment" style="height: 35px; font-size: 18px; align-items: center">
-                                                        <div>
-                                                            <a href="#" data-url="{{route('cart.add', $item->id)}}" class="text-white add-to-cart"><i class="fa fa-shopping-cart"></i> Add to
-                                                                cart</a>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-8">
                     <div class="product__sidebar">
                         <div class="product__sidebar__comment">
                             <div class="section-title">
-                                <h5>New Comment</h5>
+                                <h5>Top ALl</h5>
                             </div>
                             <div class="product__sidebar__comment__item">
                                 <div class="product__sidebar__comment__item__pic">
@@ -231,20 +190,20 @@
             let url = $(this).data('url');
             // alert(url);
             $.ajax({
-               type: "GET",
+                type: "GET",
                 url: url,
                 dataType: 'JSON',
                 success:function (data){
-                   if (data.code === 200){
+                    if (data.code === 200){
                         $('#total_quantity').html('(' + data.totalQuantity + ')');
-                       alert('them san pham thanh cong');
-                   }
+                        alert('them san pham thanh cong');
+                    }
                 }
             });
         }
 
         $(document).ready(function (){
-           $('.add-to-cart').on('click', addToCart);
+            $('.add-to-cart').on('click', addToCart);
         });
     </script>
 @endsection

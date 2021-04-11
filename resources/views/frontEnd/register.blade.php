@@ -4,7 +4,14 @@
     Register
 @endsection
 @section('CSS')
-
+    <style>
+        .normal-breadcrumb{
+            height: 200px;
+        }
+        .header_slider{
+            margin-top: 60px;
+        }
+    </style>
 @endsection
 @section('search')
     <li><div style="width: 200px"></div></li>
@@ -15,7 +22,7 @@
     <section class="normal-breadcrumb set-bg" data-setbg="{{asset('/frontEnd/img/normal-breadcrumb.jpg')}}">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-12 text-center header_slider">
                     <div class="normal__breadcrumb__text">
                         <h2>Register</h2>
                         <p>Welcome to the official BooksShop.</p>

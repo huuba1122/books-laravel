@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('title')
-    quản lý sách
+    Books detail
 @endsection
 @section('css')
 
@@ -34,11 +34,11 @@
                                 </aside>
                                 <aside class="col-sm-8 border-left">
                                     <article class="card-body p-5">
-                                        <h3 class="title mb-3">{{$book->name}}</h3>
+                                        <h3 class="title mb-3 text-primary">{{$book->name}}</h3>
                                         <dl class="item-property">
-                                            <dt>ISBN</dt>
+                                            <dt class="text-primary">ISBN</dt>
                                             <dd>{{$book->isbn}}</dd>
-                                            <dt>Authors</dt>
+                                            <dt class="text-primary">Authors</dt>
                                             <dd>
                                                 <p>
                                                     @foreach($book->authors as $author)
@@ -46,22 +46,23 @@
                                                     @endforeach
                                                 </p>
                                             </dd>
-                                            <dt>Category</dt>
+                                            <dt class="text-primary">Category</dt>
                                             <dd>{{$book->category->name ?? ''}}</dd>
-                                            <dt>Publisher</dt>
+                                            <dt class="text-primary">Publisher</dt>
                                             <dd>{{$book->publisher->name ?? ''}}</dd>
-                                            <dt>Page number</dt>
+                                            <dt class="text-primary">Page number</dt>
                                             <dd>{{$book->page_number}}</dd>
-                                            <dt>Height</dt>
+                                            <dt class="text-primary">Height</dt>
                                             <dd>{{$book->height}}</dd>
-                                            <dt>Price</dt>
+                                            <dt class="text-primary">Price</dt>
                                             <dd>{{$book->price}}</dd>
                                         </dl>
                                     </article> <!-- card-body.// -->
                                 </aside> <!-- col.// -->
                             </div>
                             <hr>
-                            <div class="row col-md-12">
+                            <div class="col-md-12">
+                                <h4 class="text-primary">Content</h4>
                                 <div style=" margin-left: 25px">
                                     <p>
                                         {!! $book->des ?? ' ' !!}

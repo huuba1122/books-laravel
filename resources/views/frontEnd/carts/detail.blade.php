@@ -6,7 +6,7 @@
 @section('CSS')
     <style>
         .cart-swap {
-            padding-top: 30px;
+            padding-top: 100px;
         }
 
         .cart-container {
@@ -24,6 +24,9 @@
         }
         .delete-cart-item:hover{
             cursor: pointer;
+        }
+        .normal-breadcrumb{
+            height: 200px;
         }
     </style>
 @endsection
